@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Shree Saini - Geomatics Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e8f4fd;
+            background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 25%, #2d4a65 50%, #1b263b 75%, #0d1b2a 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Earth Background */
+        .earth-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(34, 139, 34, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(30, 144, 255, 0.3) 0%, transparent 50%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(100,200,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            z-index: -2;
+            animation: earthRotate 120s linear infinite;
+        }
+
+        @keyframes earthRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating Satellites */
+        .satellite {
+            position: fixed;
+            font-size: 24px;
+            color: #64b5f6;
+            z-index: -1;
+            animation: satelliteOrbit 15s linear infinite;
+        }
+
+        .satellite:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .satellite:nth-child(2) {
+            top: 60%;
+            right: 15%;
+            animation-delay: 5s;
+        }
+
+        .satellite:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            animation-delay: 10s;
+        }
+
+        @keyframes satelliteOrbit {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 0.6; }
+            25% { transform: translate(50px, -30px) rotate(90deg); opacity: 1; }
+            50% { transform: translate(0, -60px) rotate(180deg); opacity: 0.8; }
+            75% { transform: translate(-50px, -30px) rotate(270deg); opacity: 1; }
+            100% { transform: translate(0, 0) rotate(360deg); opacity: 0.6; }
+        }
+
+        /* Constellation stars */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.4), transparent),
+                radial-gradient(2px 2px at 160px 30px, rgba(255,255,255,0.8), transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            z-index: -1;
+            animation: twinkle 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            background: rgba(13, 27, 42, 0.9);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(100, 181, 246, 0.1), transparent);
+            animation: headerGlow 8s linear infinite;
+        }
+
+        @keyframes headerGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #1e3a8a, #3b82f6, #06b6d4);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            border: 4px solid rgba(100, 181, 246, 0.5);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 0 30px rgba(100, 181, 246, 0.4);
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(100, 181, 246, 0.6);
+        }
+
+        h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #64b5f6, #42a5f5, #29b6f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(100, 181, 246, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #90caf9;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            font-weight: 300;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-link {
+            background: linear-gradient(45deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            border: 1px solid rgba(100, 181, 246, 0.3);
+        }
+
+        .contact-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.6);
+            background: linear-gradient(45deg, #3b82f6, #06b6d4);
+        }
+
+        .section {
+            background: rgba(13, 27, 42, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 
+                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(100, 181, 246, 0.2);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #64b5f6, transparent);
+            animation: sectionScan 3s ease-in-out infinite;
+        }
+
+        @keyframes sectionScan {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .section:nth-child(2) { animation-delay: 0.1s; }
+        .section:nth-child(3) { animation-delay: 0.2s; }
+        .section:nth-child(4) { animation-delay: 0.3s; }
+        .section:nth-child(5) { animation-delay: 0.4s; }
+        .section:nth-child(6) { animation-delay: 0.5s; }
+        .section:nth-child(7) { animation-delay: 0.6s; }
+        .section:nth-child(8) { animation-delay: 0.7s; }
+        .section:nth-child(9) { animation-delay: 0.8s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section h2 {
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            color: #64b5f6;
+            position: relative;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(45deg, #64b5f6, #42a5f5);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(100, 181, 246, 0.5);
+        }
+
+        .section h2::before {
+            content: '🛰️';
+            margin-right: 10px;
+            font-size: 0.8em;
+        }
+
+        .item {
+            background: rgba(30, 58, 138, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #64b5f6;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(100, 181, 246, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .item:hover::before {
+            left: 100%;
+        }
+
+        .item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 30px rgba(100, 181, 246, 0.2);
+            border-left: 4px solid #42a5f5;
+        }
+
+        .item h3 {
+            color: #90caf9;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+            font-weight: 500;
+        }
+
+        .item-meta {
+            color: #b3e5fc;
+            font-size: 0.95em;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-item {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+        }
+
+        .skill-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+
+        .skill-item:hover::before {
+            transform: scale(1);
+        }
+
+        .skill-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(100, 181, 246, 0.4);
+        }
+
+        .skill-item h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .download-resume {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .download-btn {
+            background: linear-gradient(45deg, #f59e0b, #d97706);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(245, 158, 11, 0.6);
+            background: linear-gradient(45deg, #d97706, #92400e);
+        }
+
+        .coordinates {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(13, 27, 42, 0.8);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8em;
+            color: #64b5f6;
+            border: 1px solid rgba(100, 181, 246, 0.3);
+            z-index: 1000;
+        }
+
+        .project-links {
+            margin-top: 10px;
+        }
+
+        .project-links a {
+            color: #64b5f6;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: 500;
+        }
+
+        .project-links a:hover {
+            color: #90caf9;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header, .section {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .coordinates {
+                position: static;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
+
+        .highlight {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .achievement-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #10b981, #059669);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 8px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="earth-bg"></div>
+    <div class="stars"></div>
+    
+    <!-- Floating Satellites -->
+    <div class="satellite">🛰️</div>
+    <div class="satellite">🛰️</div>
+    <div class="satellite">🛰️</div>
+
+    <!-- GPS Coordinates Display -->
+    <div class="coordinates">
+        📍 47.3769° N, 8.5417° E<br>
+        📡 Zurich, Switzerland
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="profile-img">🌍</div>
+            <h1>Dev Shree Saini</h1>
+            <p class="subtitle">Geomatics Engineering Graduate Student | Climate Science Researcher | GIS Specialist</p>
+            <div class="contact-links">
+                <a href="mailto:devamss29@gmail.com" class="contact-link">📧 Email</a>
+                <a href="https://www.linkedin.com/in/devshreesaini" class="contact-link" target="_blank">💼 LinkedIn</a>
+                <a href="https://github.com/devam29" class="contact-link" target="_blank">🐱 GitHub</a>
+                <a href="tel:+41-767519687" class="contact-link">📱 +41-767519687</a>
+            </div>
+        </header>
+
+        <div class="download-resume">
+            <a href="#" class="download-btn" onclick="alert('Upload your resume PDF and replace this # with the actual link')">
+                📄 Download Resume
+            </a>
+        </div>
+
+        <section class="section">
+            <h2>About Me</h2>
+            <div class="item">
+                <p>Passionate graduate student specializing in <span class="highlight">climate science and environmental data analysis</span>, with hands-on experience in satellite-based flood detection and LULC dynamics. Skilled in leveraging machine learning and geospatial technologies to address climate resilience and sustainability.</p>
+                <br>
+                <p>Currently pursuing my Master's in Geomatics Engineering at <span class="highlight">ETH Zurich</span>, I am actively driven by research that informs practical, tech-enabled climate solutions. My work spans from GNSS-based precipitation prediction to flood risk modeling using advanced geospatial tools.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Education</h2>
+            <div class="item">
+                <h3>Master's in Geomatics Engineering</h3>
+                <div class="item-meta">ETH Zurich, Switzerland • Sept 2024 – Present • CGPA: 5.22/6.0</div>
+                <p>Specializing in climate science, environmental data analysis, and advanced geospatial technologies for climate resilience research.</p>
+            </div>
+            <div class="item">
+                <h3>Bachelor's in Civil Engineering</h3>
+                <div class="item-meta">VIT Vellore, India • July 2019 – June 2023 • CGPA: 9.33/10.0 <span class="achievement-badge">Dept. Rank 2</span></div>
+                <p>Graduated with <span class="highlight">Department Rank 2</span> and received Merit Scholarship for 3 consecutive years for academic excellence.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Technical Skills</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <h3>🐍 Programming</h3>
+                    <p>Python (NumPy, PyTorch), MATLAB</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🗺️ GIS & Remote Sensing</h3>
+                    <p>QGIS, ArcGIS, Satellite Data Processing</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🌊 Hydrological Modeling</h3>
+                    <p>HEC-RAS, Arc-SWAT, Flood Modeling</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🤖 Machine Learning</h3>
+                    <p>Deep Learning, Climate Modeling, U-Net</p>
+                </div>
+                <div class="skill-item">
+                    <h3>📊 Data Analysis</h3>
+                    <p>Spatial Data Analysis, Statistical Modeling</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🔧 Tools & Software</h3>
+                    <p>LaTeX, Microsoft Products, GNSS Processing</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Research Projects</h2>
+            <div class="item">
+                <h3>Detection of Heavy Precipitation using GNSS Zenith Wet Delay</h3>
+                <div class="item-meta">ETH Zurich • 2024 • Machine Learning, GNSS, Climate Prediction</div>
+                <p>Developing a machine learning model to predict heavy rainfall events a few hours in advance by analyzing GNSS signal delay. Working with GNSS and ERA5 datasets from <span class="highlight">~3200 stations across Europe</span> over one year, integrating GNSS Zenith Wet Delay and meteorological data to enhance prediction accuracy.</p>
+            </div>
+            <div class="item">
+                <h3>Land Use Dynamics and Hydrological Process Analysis for Flood Risk Assessment</h3>
+                <div class="item-meta">Arc-SWAT, HEC-RAS • Dhansiri River Basin, India</div>
+                <p>Developed a comprehensive SWAT model to simulate surface runoff and flood risks achieving exceptional model accuracy with <span class="highlight">NSE: 0.84 and R²: 0.90</span> for runoff predictions. Conducted HEC-RAS flood modeling to identify high-risk flood zones and inform disaster management strategies.</p>
+            </div>
+            <div class="item">
+                <h3>Geospatial Assessment of Groundwater Sustainability</h3>
+                <div class="item-meta">AHP Analysis • Ahmedabad, India • Regulatory Decision-Making</div>
+                <p>Conducted comprehensive groundwater potential study in Ahmedabad facing severe scarcity due to over-extraction. Evaluated 8 key factors influencing groundwater availability using AHP weightage analysis. Results showed <span class="highlight">89% medium to high potential zones</span>, but actual usage reduced availability to only 65% of the area.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Professional Experience</h2>
+            <div class="item">
+                <h3>Spatial Data Analyst Intern</h3>
+                <div class="item-meta">Indian Institute of Remote Sensing (IIRS), ISRO • Dehradun, India • Jan 2023 – Dec 2023</div>
+                <p>Developed a deep learning model (U-Net) using <span class="highlight">Sentinel-1 SAR data</span> for flood-prone area detection in Bihar. Integrated 4 years of daily rainfall data into rasterized format for training and optimized hyperparameters to achieve <span class="highlight">92% accuracy with F1 score of 0.69</span>.</p>
+                <div class="project-links">
+                    <strong>Key Skills:</strong> Deep Learning, SAR Data Processing, Flood Prediction, Python (NumPy, PyTorch)
+                </div>
+            </div>
+            <div class="item">
+                <h3>Research Intern</h3>
+                <div class="item-meta">Concordia University • Montreal, Canada • June 2022 – Aug 2022 <span class="achievement-badge">MITACS Globalink</span></div>
+                <p>Designed and implemented a geotextile-based filtration system reducing <span class="highlight">particulate nutrients in lake water by 50%</span>. Conducted comprehensive lab tests on Total Organic Carbon (TOC), Phosphorus, Nitrogen, and Suspended Solids. Used spatial analysis to assess water pollution trends for regulatory compliance.</p>
+            </div>
+            <div class="item">
+                <h3>Teaching Assistant</h3>
+                <div class="item-meta">Vellore Institute of Technology • Vellore, India • Sept 2021 – Jan 2023</div>
+                <p>Contributed to 3 research projects for Master's and PhD students, specializing in GIS tasks including LULC classification, flood inundation mapping, and dam break analysis. Trained and mentored <span class="highlight">~40 students</span> in QGIS & ArcGIS applications for civil engineering topics.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Research Publications</h2>
+            <div class="item">
+                <h3>Impact of Short-Duration Precipitation Events over the Cauvery Basin</h3>
+                <div class="item-meta">Scientific Reports, Nature • 2023</div>
+                <p>Co-authored research on altered water resource patterns and associated threats in the historic Cauvery Basin, analyzing the impact of short-duration precipitation events on regional hydrology.</p>
+                <div class="project-links">
+                    <a href="https://doi.org/10.1038/s41598-023-41417-6" target="_blank">📖 Read Paper</a>
+                </div>
+            </div>
+            <div class="item">
+                <h3>Hydraulic Model HEC-RAS Coupled with GIS and Remote Sensing for Flood Detection</h3>
+                <div class="item-meta">Journal of the Geological Society of India • 2024</div>
+                <p>Simulation study examining the effect of river cross-section width in detecting flood-prone areas using integrated HEC-RAS, GIS, and remote sensing technologies.</p>
+                <div class="project-links">
+                    <a href="https://doi.org/10.17491/jgsi/2024/173843" target="_blank">📖 Read Paper</a>
+                </div>
+            </div>
+            <div class="item">
+                <h3>Land Use/Cover Dynamics and Ecosystem Service Values of Chilika Lake</h3>
+                <div class="item-meta">Estuaries and Coasts • 2025</div>
+                <p>Eco-climatological investigation analyzing LULC impacts on eutrophication, land surface temperature, and ecosystem service values in India's largest coastal lagoon.</p>
+                <div class="project-links">
+                    <a href="https://doi.org/10.1007/s12237-025-01509-0" target="_blank">📖 Read Paper</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Achievements & Recognition</h2>
+            <div class="item">
+                <h3>GATE 2024 - All India Rank 52</h3>
+                <div class="item-meta">Geomatics Engineering • Top 0.1% Nationally</div>
+                <p>Achieved exceptional performance in the Graduate Aptitude Test in Engineering, demonstrating mastery in geomatics and spatial sciences.</p>
+            </div>
+            <div class="item">
+                <h3>MITACS Globalink Research Intern</h3>
+                <div class="item-meta">Government of Canada • 2022</div>
+                <p>Selected for prestigious international research internship program, conducting advanced research at Concordia University, Montreal.</p>
+            </div>
+            <div class="item">
+                <h3>Merit Scholarship & Department Rank 2</h3>
+                <div class="item-meta">VIT Vellore • 2019-2023</div>
+                <p>Awarded merit scholarship for three consecutive years and achieved <span class="highlight">Department Rank 2</span> in Civil Engineering for consistent academic excellence.</p>
+            </div>
+            <div class="item">
+                <h3>Winner - Road Safety Hackathon</h3>
+                <div class="item-meta">Innovation in Transport Safety</div>
+                <p>Recognized for developing innovative solutions addressing critical transportation safety challenges using geospatial technologies.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Leadership & Volunteering</h2>
+            <div class="item">
+                <h3>Academic Head - KCHEF</h3>
+                <div class="item-meta">Ed-tech Startup Leadership</div>
+                <p>Led content strategy development and educational program design for emerging educational technology platform.</p>
+            </div>
+            <div class="item">
+                <h3>Core Member - ASCE</h3>
+                <div class="item-meta">American Society of Civil Engineers</div>
+                <p>Organized technical workshops, outreach activities, and professional development programs for engineering students.</p>
+            </div>
+            <div class="item">
+                <h3>Discipline Head</h3>
+                <div class="item-meta">Student Affairs • 2 Years</div>
+                <p>Managed student conduct and academic discipline matters, fostering positive learning environment for peers.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Languages & Interests</h2>
+            <div class="skills-grid">
+                <div class="skill-item">
+                    <h3>🗣️ Languages</h3>
+                    <p><strong>Hindi:</strong> Native<br><strong>English:</strong> C1 Level<br><strong>German:</strong> A1 Level</p>
+                </div>
+                <div class="skill-item">
+                    <h3>🎯 Interests</h3>
+                    <p>Cooking, Poetry Writing, Hiking, Chess, Reading, Sports</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Let's Connect</h2>
+            <div class="item">
+                <p style="text-align: center; font-size: 1.1em;">
+                    I'm passionate about leveraging geospatial technologies and machine learning to address climate challenges. 
+                    Always interested in research collaborations, innovative projects, and opportunities to make a positive environmental impact.
+                </p>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="mailto:devamss29@gmail.com" class="contact-link">🚀 Let's Collaborate</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Add smooth scrolling for any internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add parallax effect to background elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const satellites = document.querySelectorAll('.satellite');
+            const earthBg = document.querySelector('.earth-bg');
+            
+            satellites.forEach((satellite, index) => {
+                const speed = 0.3 + (index * 0.1);
+                satellite.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+            
+            if (earthBg) {
+                earthBg.style.transform = `translateY(${scrolled * 0.1}px) rotate(${scrolled * 0.05}deg)`;
+            }
+        });
+
+        // Dynamic coordinate display (simulated GPS tracking)
+        function updateCoordinates() {
+            const coords = document.querySelector('.coordinates');
+            if (coords) {
+                const time = new Date().toLocaleTimeString();
+                coords.innerHTML = `
+                    📍 47.3769° N, 8.5417° E<br>
+                    📡 Zurich, Switzerland<br>
+                    <small style="opacity: 0.7;">Last updated: ${time}</small>
+                `;
+            }
+        }
+
+        // Update coordinates every 30 seconds
+        updateCoordinates();
+        setInterval(updateCoordinates, 30000);
+
+        // Add typing effect to the subtitle
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize typing effect after page load
+        window.addEventListener('load', () => {
+            const subtitle = document.querySelector('.subtitle');
+            const originalText = subtitle.textContent;
+            setTimeout(() => {
+                typeWriter(subtitle, originalText, 50);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
